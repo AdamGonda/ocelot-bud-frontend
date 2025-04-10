@@ -3,12 +3,13 @@ import { useState, useCallback } from "preact/hooks";
 import "ojs/ojfilepicker";
 import { FilePickerElement } from "ojs/ojfilepicker";
 import { ButtonElement } from "ojs/ojbutton";
+import { Batch } from ".";
 
 type FilePickerProps = ComponentProps<"oj-file-picker">;
 
 type modes = FilePickerProps["selectionMode"];
 
-const FilePicker = () => {
+const FilePicker = ({ setBatch }: { setBatch: React.Dispatch<React.SetStateAction<Batch[]>> }) => {
   const [accept, setAccept] = useState<string[]>(["image/*", "application/pdf"]);
   const [selectionMode, setSelectionMode] = useState<modes>("multiple");
   const [disabled, setDisabled] = useState<boolean>(false);
@@ -45,7 +46,13 @@ const FilePicker = () => {
       }).then(async (response) => {
 
         const json = await response.json();
-        console.log(json);
+
+        setBatch(prev => {
+          return [...prev, {
+            id: json.id,
+            status: json.status,
+          }]
+        })
 
         setUploading(false);
         setSelectedFiles([]);
