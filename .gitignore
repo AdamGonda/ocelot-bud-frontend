@@ -1,0 +1,16 @@
+/jet_components
+/node_modules
+/bower_components
+/dist
+/jaftmp@
+/web
+/staged-themes
+/themes
+migrator.log
+migratorConfig.json
+
+.DS_Store
+Thumbs.db
+/.vscode
+settings.json
+package-lock.json
