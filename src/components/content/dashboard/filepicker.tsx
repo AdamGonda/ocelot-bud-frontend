@@ -40,7 +40,7 @@ const FilePicker = () => {
         formData.append(`file${index}`, file);
       });
 
-      fetch("https://api.example.com/upload", {
+      fetch("http://localhost:3000/api/upload", {
         method: "POST",
         body: formData,
       });
