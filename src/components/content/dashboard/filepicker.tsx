@@ -53,6 +53,7 @@ const FilePicker = ({ setBatch }: { setBatch: React.Dispatch<React.SetStateActio
           return [...prev, {
             id: json.id,
             status: json.status,
+            files: json.files,
           }]
         })
 
