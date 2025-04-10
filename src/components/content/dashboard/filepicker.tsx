@@ -13,6 +13,7 @@ const FilePicker = () => {
   const [selectionMode, setSelectionMode] = useState<modes>("multiple");
   const [disabled, setDisabled] = useState<boolean>(false);
   const [selectedFiles, setSelectedFiles] = useState<Array<File>>(); // State for storing file details
+  const [uploading, setUploading] = useState<boolean>(false);
 
   const selectListener = (event: FilePickerElement.ojSelect) => {
     const files = event.detail.files;
@@ -31,8 +32,7 @@ const FilePicker = () => {
   };
 
   const handleOjAction = (event: ButtonElement.ojAction) => {
-    const label = event.detail.originalEvent.currentTarget.innerText;
-    console.log("Button clicked: ", label ? label : "Icon Only");
+    setUploading(true);
 
     if (selectedFiles && selectedFiles.length > 0) {
       const formData = new FormData();
@@ -43,6 +43,9 @@ const FilePicker = () => {
       fetch("http://localhost:3000/api/upload", {
         method: "POST",
         body: formData,
+      }).then((response) => {
+        setUploading(false);
+        setSelectedFiles([]);
       });
     }
   };
@@ -70,7 +73,7 @@ const FilePicker = () => {
         )}
       </div>
       <oj-button
-        label="Call To Action"
+        label={uploading ? "Loading..." : "Upload files"}
         chroming="callToAction"
         class="oj-button-full-width"
         onojAction={handleOjAction}></oj-button>
