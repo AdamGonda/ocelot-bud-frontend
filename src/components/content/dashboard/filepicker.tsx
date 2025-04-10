@@ -46,6 +46,8 @@ const FilePicker = () => {
       }).then((response) => {
         setUploading(false);
         setSelectedFiles([]);
+
+        alert("File uploaded successfully");
       });
     }
   };
