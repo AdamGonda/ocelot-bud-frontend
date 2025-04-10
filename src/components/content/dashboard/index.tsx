@@ -13,11 +13,11 @@ export interface Batch {
 
 const BindingContent = () => {
   const [batch, setBatch] = useState<Batch[]>([
-    {
-      id: 1,
-      status: 'pending',
-      files: [{ name: 'file1.jpg' }, { name: 'file2.jpg' }],
-    },
+    // {
+    //   id: 1,
+    //   status: 'pending',
+    //   files: [{ name: 'file1.jpg' }, { name: 'file2.jpg' }],
+    // },
   ]);
 
   return (
