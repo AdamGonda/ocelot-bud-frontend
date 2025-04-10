@@ -9,7 +9,9 @@ type FilePickerProps = ComponentProps<"oj-file-picker">;
 
 type modes = FilePickerProps["selectionMode"];
 
-const FilePicker = ({ setBatch }: { setBatch: React.Dispatch<React.SetStateAction<Batch[]>> }) => {
+const pollerIds: string[] = []
+
+const FilePicker = ({ batch, setBatch }: { batch: Batch[], setBatch: React.Dispatch<React.SetStateAction<Batch[]>> }) => {
   const [accept, setAccept] = useState<string[]>(["image/*", "application/pdf"]);
   const [selectionMode, setSelectionMode] = useState<modes>("multiple");
   const [disabled, setDisabled] = useState<boolean>(false);
@@ -48,7 +50,6 @@ const FilePicker = ({ setBatch }: { setBatch: React.Dispatch<React.SetStateActio
         const json = await response.json();
 
         console.log(json);
-
         setBatch(prev => {
           return [...prev, {
             id: json.id,
