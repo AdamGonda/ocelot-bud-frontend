@@ -32,9 +32,8 @@ const FilePicker = () => {
   };
 
   const handleOjAction = (event: ButtonElement.ojAction) => {
-    setUploading(true);
-
     if (selectedFiles && selectedFiles.length > 0) {
+      setUploading(true);
       const formData = new FormData();
       selectedFiles.forEach((file, index) => {
         formData.append(`file${index}`, file);
@@ -43,7 +42,11 @@ const FilePicker = () => {
       fetch("http://localhost:3000/api/upload", {
         method: "POST",
         body: formData,
-      }).then((response) => {
+      }).then(async (response) => {
+
+        const json = await response.json();
+        console.log(json);
+
         setUploading(false);
         setSelectedFiles([]);
 
