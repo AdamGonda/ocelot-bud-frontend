@@ -82,7 +82,6 @@ export const App = registerCustomElement("app-root", (props: Props) => {
   return (
     <div id="appContainer" class="oj-web-applayout-page">
       <Content page={routePath} router={router} />
-      <Footer />
     </div>
   );
 });

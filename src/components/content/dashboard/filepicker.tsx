@@ -81,8 +81,6 @@ const FilePicker = ({ setBatch }: { setBatch: React.Dispatch<React.SetStateActio
             {selectedFiles.map((file, index) => (
               <li key={index}>
                 {`Name: ${file.name} (${file.type})`}
-                <br />
-                {`Size: ${file.size} bytes`}
               </li>
             ))}
           </ul>
