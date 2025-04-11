@@ -81,13 +81,6 @@ export const App = registerCustomElement("app-root", (props: Props) => {
 
   return (
     <div id="appContainer" class="oj-web-applayout-page">
-      <Header
-        appName={props.appName}
-        page={routePath}
-        onPageChanged={pageChangeHandler}
-        userLogin={props.userLogin}
-        routes={routeArray}
-      />
       <Content page={routePath} router={router} />
       <Footer />
     </div>

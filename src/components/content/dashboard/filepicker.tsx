@@ -68,6 +68,7 @@ const FilePicker = ({ setBatch }: { setBatch: React.Dispatch<React.SetStateActio
   return (
     <>
       <oj-file-picker
+        style={{ maxWidth: '100%' }}
         accept={accept}
         selectionMode={selectionMode}
         onojSelect={selectListener}

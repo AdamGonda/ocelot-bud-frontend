@@ -54,7 +54,7 @@ const BindingContent = () => {
 
   return (
     <div class="oj-web-applayout-max-width oj-web-applayout-content">
-      <h2 class="oj-typography-heading-sm">File Picker</h2>
+      <h2 class="oj-typography-heading-sm">Prior Authorization Form Check</h2>
       <FilePicker setBatch={setBatch} />
 
       <oj-button
