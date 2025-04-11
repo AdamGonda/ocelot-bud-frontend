@@ -1,9 +1,9 @@
 import "ojs/ojdialog";
 import "ojs/ojpopup";
 import "ojs/ojbutton";
+import { ojButton } from "ojs/ojbutton";
 import "preact";
 import { useState, useRef } from "preact/hooks";
-import { ojButton } from "ojs/ojbutton";
 import { ojDialog } from "ojs/ojdialog";
 
 export const Dialog = () => {

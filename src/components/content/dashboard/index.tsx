@@ -1,6 +1,10 @@
 import { h } from "preact";
 import FilePicker from "./filepicker";
-import { useState } from "preact/hooks";
+import { useRef, useState } from "preact/hooks";
+import "ojs/ojdialog";
+import { ojDialog } from "ojs/ojdialog";
+import "ojs/ojbutton";
+import { ojButton } from "ojs/ojbutton";
 
 export interface Batch {
   id: number;
@@ -80,9 +84,15 @@ const BindingContent = () => {
 export default BindingContent;
 
 function getFileStatus(status: string) {
-  const openModal = () => {
-    console.log('open modal');
-  }
+  const diag1 = useRef<ojDialog>(null);
+
+  const open = (event: ojButton.ojAction) => {
+    diag1.current?.open();
+  };
+
+  const close = () => {
+    diag1.current?.close();
+  };
 
   if (status === 'pending') {
     return 'pending'
@@ -98,7 +108,26 @@ function getFileStatus(status: string) {
         label={"Fix problem"}
         chroming="callToAction"
         class="oj-button-full-width"
-        onojAction={openModal}></oj-button>
+        onojAction={open}></oj-button>
+      <oj-dialog
+            id="dialog1"
+            dialog-title="Example Dialog"
+            aria-describedby="desc"
+            ref={diag1}
+          >
+            <div slot="body">
+              <p id="desc">
+                This is the dialog content. User can change dialog resize
+                behavior, cancel behavior and drag behavior by setting
+                properties. Default property value depends on the theme.
+              </p>
+            </div>
+            <div slot="footer">
+              <oj-button id="okButton" onojAction={close}>
+                OK
+              </oj-button>
+            </div>
+          </oj-dialog>
     </div>
   }
 }
