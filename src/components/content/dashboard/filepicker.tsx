@@ -15,7 +15,7 @@ const FilePicker = ({ setBatch }: { setBatch: React.Dispatch<React.SetStateActio
   const [accept, setAccept] = useState<string[]>(["image/*", "application/pdf"]);
   const [selectionMode, setSelectionMode] = useState<modes>("multiple");
   const [disabled, setDisabled] = useState<boolean>(false);
-  const [selectedFiles, setSelectedFiles] = useState<Array<File>>(); // State for storing file details
+  const [selectedFiles, setSelectedFiles] = useState<Array<File>>([]); // State for storing file details
   const [uploading, setUploading] = useState<boolean>(false);
 
   const selectListener = (event: FilePickerElement.ojSelect) => {
@@ -87,6 +87,7 @@ const FilePicker = ({ setBatch }: { setBatch: React.Dispatch<React.SetStateActio
         )}
       </div>
       <oj-button
+        disabled={selectedFiles.length === 0}
         style={{ marginTop: '10px' }}
         label={uploading ? "Loading..." : "Upload files"}
         chroming="callToAction"

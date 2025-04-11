@@ -66,11 +66,16 @@ const BindingContent = () => {
 
       <div class="batch-container">
         {[...batch].reverse().map((b) => (
-          <div key={b.id} class="batch-item">
+          <div key={b.id} class="batch-item" style={{ background: b.status === 'pending' ? 'rgba(193, 169, 0, 0.2)' : 'rgba(0, 138, 0, 0.2)' }}>
             <p><b>Status:</b> {b.status}</p>
             {
               b.files.map((f: any) => (
-                <div style={{ border: '1px solid #ccc', borderRadius: '5px', padding: '10px' }}>
+                <div style={{ 
+                  border: '1px solid #ccc', 
+                  borderRadius: '5px', 
+                  padding: '10px',
+                  background: f.status.status === 'failed' ? 'rgba(255, 0, 0, 0.2)' : 'transparent'
+                }}>
                   <p><b>File name:</b> {f.name}</p>
                   <div style={{ display: 'flex', alignItems: 'center' }}>
                     <p style={{ marginBottom: '0px', marginRight: '10px' }}><b>Status:</b></p>
