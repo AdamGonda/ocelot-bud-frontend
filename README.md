@@ -1,23 +1,84 @@
-# Oracle JET VDOM training sample app
-Example code for learning Oracle JET Virtual DOM Architecture based applications.
+# Upload Endpoint
 
-This project is developed for use with the Oracle JavaScript Extension Toolkit(JET) coding environment.
+## POST /api/upload
 
-## Prerequisites
-  * JET v16.0.x or higher is required for this project to work. Using the current production release is always recommended.
-  * Nodejs v18 LTS or higher LTS is required.  Nodejs nightly(Current) releases may not work correctly. 
+Accepts file uploads and creates a batch processing record.
 
-## Installation
+### Request
+- Method: POST
+- Content-Type: multipart/form-data
+- Files should be sent with keys starting with "file" (e.g., file1, file2, etc.)
 
-* Clone project
-* Change to the root directory of the project
-* run *npm install*
-* run *npx ojet serve*
+### Response
+- Status: 200 on success
+- Body: 
+  ```json
+  {
+    "id": "batch_id",
+    "isDone": "timestamp",
+    "files": [
+      {
+        "name": "filename",
+        "type": "mime_type",
+        "size": file_size,
+        "status": { "status": "pending" }
+      }
+    ],
+    "status": "pending"
+  }
+  ```
 
+### CORS
+- Allowed Origin: http://localhost:8000
+- Allowed Methods: POST, OPTIONS
+- Allowed Headers: Content-Type
 
-## Additional Resources
-A series of videos using this sample project, are available from this [YouTube playlist](https://www.youtube.com/playlist?list=PLnADbF0cZL0DiIzNQmRJJ950mStthbpbR)
+### Error Handling
+- 400: No files uploaded
+- 500: Server error 
 
-To see a running demo of this project, you can go to the [Demo page](https://peppertech.github.io/vdomtraining)
+---
 
-Note: Release 1.0.0 of this project was used for the first 6 videos in the above YouTube playlist.  The Main branch code will be slightly different than what was originally shown.
+# Status Endpoint
+
+## GET /api/status
+
+Retrieves the status of a batch processing job.
+
+### Request
+- Method: GET
+- Query Parameter: `id` (required) - The batch ID to check
+
+### Response
+- Status: 200 on success
+- Body: 
+  ```json
+  {
+    "id": "batch_id",
+    "status": "pending|completed",
+    "files": [
+      {
+        "name": "filename",
+        "type": "mime_type",
+        "size": file_size,
+        "status": {
+          "status": "pending|completed|failed",
+          "validationErrors": {
+            "type": "error_type",
+            "field": "field_name"
+          }
+        }
+      }
+    ]
+  }
+  ```
+
+### CORS
+- Allowed Origin: http://localhost:8000
+- Allowed Methods: GET, OPTIONS
+- Allowed Headers: Content-Type
+
+### Error Handling
+- 400: Missing ID parameter
+- 404: Batch not found
+- 500: Server error
