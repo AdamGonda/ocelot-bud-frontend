@@ -16,7 +16,6 @@ export interface Batch {
 }
 
 const BindingContent = () => {
-  const [pollingId, setPollingId] = useState<NodeJS.Timeout | null>(null);
   const [batch, setBatch] = useState<Batch[]>([]);
 
   const getStatus = async (id: number) => {
@@ -56,7 +55,7 @@ const BindingContent = () => {
   return (
     <div class="oj-web-applayout-max-width oj-web-applayout-content">
       <h2 class="oj-typography-heading-sm">File Picker</h2>
-      <FilePicker setBatch={setBatch} setPollingId={setPollingId} handleRefresh={handleRefresh} />
+      <FilePicker setBatch={setBatch} />
 
       <oj-button
         style={{ marginTop: '10px' }}
@@ -66,7 +65,7 @@ const BindingContent = () => {
         onojAction={handleRefresh}></oj-button>
 
       <div class="batch-container">
-        {batch.map((b) => (
+        {[...batch].reverse().map((b) => (
           <div key={b.id} class="batch-item">
             <p><b>Status:</b> {b.status}</p>
             {

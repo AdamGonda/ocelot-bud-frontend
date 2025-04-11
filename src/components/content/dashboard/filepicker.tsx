@@ -11,7 +11,7 @@ type modes = FilePickerProps["selectionMode"];
 
 const pollerIds: string[] = []
 
-const FilePicker = ({ setBatch, setPollingId, handleRefresh }: { setBatch: React.Dispatch<React.SetStateAction<Batch[]>>, setPollingId: React.Dispatch<React.SetStateAction<NodeJS.Timeout | null>>, handleRefresh: () => void }) => {
+const FilePicker = ({ setBatch }: { setBatch: React.Dispatch<React.SetStateAction<Batch[]>> }) => {
   const [accept, setAccept] = useState<string[]>(["image/*", "application/pdf"]);
   const [selectionMode, setSelectionMode] = useState<modes>("multiple");
   const [disabled, setDisabled] = useState<boolean>(false);
@@ -61,12 +61,6 @@ const FilePicker = ({ setBatch, setPollingId, handleRefresh }: { setBatch: React
         setSelectedFiles([]);
 
         alert("File uploaded successfully");
-
-        const pollingId = setInterval(() => {
-          handleRefresh();
-        }, 1000);
-
-        setPollingId(pollingId);
       });
     }
   };
