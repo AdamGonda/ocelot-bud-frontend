@@ -19,7 +19,7 @@ const BindingContent = () => {
       const json = await response.json();
 
       const { status, files } = json;
-      
+
       if (status === 'completed') {
         setBatch(prev => {
           return prev.map(item => {
@@ -62,7 +62,7 @@ const BindingContent = () => {
             <p><b>Status:</b> {b.status}</p>
             {
               b.files.map((f: any) => (
-                <p><b>File name:</b> {f.name} - <b>Status:</b> {f.status}</p>
+                <p><b>File name:</b> {f.name} - <b>Status:</b> {getStatus(f.status)}</p>
               ))
             }
           </div>
@@ -72,3 +72,25 @@ const BindingContent = () => {
   );
 };
 export default BindingContent;
+
+function getFielStatus(status: string) {
+  const openModal = () => {
+    console.log('open modal');
+  }
+
+  if (status === 'pending') {
+    return 'pending'
+  }
+  
+  if (status === 'completed') {
+    return 'completed'
+  }
+
+  if (status === 'failed') {
+    return <oj-button
+    label={"Fix problem"}
+    chroming="callToAction"
+    class="oj-button-full-width"
+    onojAction={openModal}></oj-button>
+  }
+}
