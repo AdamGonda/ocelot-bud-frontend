@@ -11,7 +11,7 @@ type modes = FilePickerProps["selectionMode"];
 
 const pollerIds: string[] = []
 
-const FilePicker = ({ batch, setBatch }: { batch: Batch[], setBatch: React.Dispatch<React.SetStateAction<Batch[]>> }) => {
+const FilePicker = ({ setBatch, setPollingId, handleRefresh }: { setBatch: React.Dispatch<React.SetStateAction<Batch[]>>, setPollingId: React.Dispatch<React.SetStateAction<NodeJS.Timeout | null>>, handleRefresh: () => void }) => {
   const [accept, setAccept] = useState<string[]>(["image/*", "application/pdf"]);
   const [selectionMode, setSelectionMode] = useState<modes>("multiple");
   const [disabled, setDisabled] = useState<boolean>(false);
@@ -27,9 +27,8 @@ const FilePicker = ({ batch, setBatch }: { batch: Batch[], setBatch: React.Dispa
     const message = event.detail.messages;
     setSelectedFiles([]);
     alert(
-      `${
-        message[0].severity.charAt(0).toUpperCase() +
-        message[0].severity.slice(1)
+      `${message[0].severity.charAt(0).toUpperCase() +
+      message[0].severity.slice(1)
       } \n ${message[0].summary}`
     );
   };
@@ -62,6 +61,12 @@ const FilePicker = ({ batch, setBatch }: { batch: Batch[], setBatch: React.Dispa
         setSelectedFiles([]);
 
         alert("File uploaded successfully");
+
+        const pollingId = setInterval(() => {
+          handleRefresh();
+        }, 1000);
+
+        setPollingId(pollingId);
       });
     }
   };
