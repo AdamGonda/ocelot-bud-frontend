@@ -62,7 +62,13 @@ const BindingContent = () => {
             <p><b>Status:</b> {b.status}</p>
             {
               b.files.map((f: any) => (
-                <p><b>File name:</b> {f.name} - <b>Status:</b> {getFileStatus(f.status)}</p>
+                <div style={{ border: '1px solid #ccc', borderRadius: '5px', padding: '10px' }}>
+                  <p><b>File name:</b> {f.name}</p>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <p style={{ marginBottom: '0px', marginRight: '10px' }}><b>Status:</b></p>
+                    {getFileStatus(f.status)}
+                  </div>
+                </div>
               ))
             }
           </div>
@@ -81,16 +87,18 @@ function getFileStatus(status: string) {
   if (status === 'pending') {
     return 'pending'
   }
-  
+
   if (status === 'completed') {
     return 'completed'
   }
 
   if (status === 'failed') {
-    return <oj-button
-    label={"Fix problem"}
-    chroming="callToAction"
-    class="oj-button-full-width"
-    onojAction={openModal}></oj-button>
+    return <div style={{ display: 'inline-block' }}>
+      <oj-button
+        label={"Fix problem"}
+        chroming="callToAction"
+        class="oj-button-full-width"
+        onojAction={openModal}></oj-button>
+    </div>
   }
 }
