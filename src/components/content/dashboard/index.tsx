@@ -59,6 +59,7 @@ const BindingContent = () => {
       <FilePicker setBatch={setBatch} setPollingId={setPollingId} handleRefresh={handleRefresh} />
 
       <oj-button
+        style={{ marginTop: '10px' }}
         label={"Refresh"}
         chroming="callToAction"
         class="oj-button-full-width"

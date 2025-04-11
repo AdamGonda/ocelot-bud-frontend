@@ -94,6 +94,7 @@ const FilePicker = ({ setBatch, setPollingId, handleRefresh }: { setBatch: React
         )}
       </div>
       <oj-button
+        style={{ marginTop: '10px' }}
         label={uploading ? "Loading..." : "Upload files"}
         chroming="callToAction"
         class="oj-button-full-width"
