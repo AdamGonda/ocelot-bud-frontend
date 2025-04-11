@@ -2,19 +2,19 @@ import { h } from "preact";
 import FilePicker from "./filepicker";
 import { useState } from "preact/hooks";
 
-
 export interface Batch {
-  id: string;
+  id: number;
   status: 'pending' | 'completed' | 'failed';
   files: {
-    name: string;
+    name: number;
+    status: 'pending' | 'completed' | 'failed';
   }[];
 }
 
 const BindingContent = () => {
   const [batch, setBatch] = useState<Batch[]>([]);
 
-  const getStatus = (id: string) => {
+  const getStatus = (id: number) => {
     fetch(`http://localhost:3000/api/status?id=${id}`).then(async (response) => {
       const json = await response.json();
 
@@ -27,6 +27,9 @@ const BindingContent = () => {
               return {
                 ...item,
                 status,
+                files: files.map((f: any) => ({
+                  ...f,
+                }))
               };
             }
             return item;
@@ -38,7 +41,7 @@ const BindingContent = () => {
 
   const handleRefresh = () => {
     batch.forEach((b) => {
-      getStatus(b.id.toString());
+      getStatus(b.id);
     });
   }
 
@@ -58,8 +61,8 @@ const BindingContent = () => {
           <div key={b.id} class="batch-item">
             <p><b>Status:</b> {b.status}</p>
             {
-              b.files.map((f) => (
-                <p><b>File name:</b> {f.name}</p>
+              b.files.map((f: any) => (
+                <p><b>File name:</b> {f.name} - <b>Status:</b> {f.status}</p>
               ))
             }
           </div>
