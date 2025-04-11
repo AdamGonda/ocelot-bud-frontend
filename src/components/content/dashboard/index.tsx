@@ -70,7 +70,8 @@ const BindingContent = () => {
                   <p><b>File name:</b> {f.name}</p>
                   <div style={{ display: 'flex', alignItems: 'center' }}>
                     <p style={{ marginBottom: '0px', marginRight: '10px' }}><b>Status:</b></p>
-                    {getFileStatus(f.status)}
+                    {/* @ts-ignore */}
+                    <FileStatus id={b.id} status={f.status as 'pending' | 'completed' | 'failed'} />
                   </div>
                 </div>
               ))
@@ -83,7 +84,11 @@ const BindingContent = () => {
 };
 export default BindingContent;
 
-function getFileStatus(status: string) {
+function FileStatus({ id, status }: { id: number, status: {
+  status: 'pending' | 'completed' | 'failed',
+  validationErrors: string[]
+} }) {
+  console.log(status);
   const diag1 = useRef<ojDialog>(null);
 
   const open = (event: ojButton.ojAction) => {
@@ -94,15 +99,16 @@ function getFileStatus(status: string) {
     diag1.current?.close();
   };
 
-  if (status === 'pending') {
+  if (status.status === 'pending') {
     return 'pending'
   }
 
-  if (status === 'completed') {
+  if (status.status === 'completed') {
     return 'completed'
   }
 
-  if (status === 'failed') {
+  if (status.status === 'failed') {
+    console.log(status.validationErrors)
     return <div style={{ display: 'inline-block' }}>
       <oj-button
         label={"Fix problem"}
@@ -111,15 +117,13 @@ function getFileStatus(status: string) {
         onojAction={open}></oj-button>
       <oj-dialog
             id="dialog1"
-            dialog-title="Example Dialog"
+            dialog-title="Validation errors"
             aria-describedby="desc"
             ref={diag1}
           >
             <div slot="body">
               <p id="desc">
-                This is the dialog content. User can change dialog resize
-                behavior, cancel behavior and drag behavior by setting
-                properties. Default property value depends on the theme.
+                {JSON.stringify(status.validationErrors)}
               </p>
             </div>
             <div slot="footer">
@@ -130,4 +134,6 @@ function getFileStatus(status: string) {
           </oj-dialog>
     </div>
   }
+
+  return null;
 }
