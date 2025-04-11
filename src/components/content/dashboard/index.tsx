@@ -62,7 +62,7 @@ const BindingContent = () => {
             <p><b>Status:</b> {b.status}</p>
             {
               b.files.map((f: any) => (
-                <p><b>File name:</b> {f.name} - <b>Status:</b> {getStatus(f.status)}</p>
+                <p><b>File name:</b> {f.name} - <b>Status:</b> {getFileStatus(f.status)}</p>
               ))
             }
           </div>
@@ -73,7 +73,7 @@ const BindingContent = () => {
 };
 export default BindingContent;
 
-function getFielStatus(status: string) {
+function getFileStatus(status: string) {
   const openModal = () => {
     console.log('open modal');
   }
