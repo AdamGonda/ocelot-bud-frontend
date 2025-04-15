@@ -8,6 +8,7 @@
 /themes
 migrator.log
 migratorConfig.json
+/docs
 
 .DS_Store
 Thumbs.db
