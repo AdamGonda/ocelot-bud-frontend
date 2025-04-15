@@ -48,8 +48,7 @@ const Dashboard = () => {
           f.status = 'pending'
         } else {
           const json = await response.json();
-          // f.status = getFileStatus(json)
-          f.status = 'completed'
+          f.status = getFileStatus(json)
           f.json = json
         }
       }))
@@ -145,7 +144,7 @@ function FileStatus({ id, status, json }: {
       >
         <div slot="body">
           <p id="desc">
-            {JSON.stringify(json)}
+            {JSON.stringify(json.validation)}
           </p>
         </div>
         <div slot="footer">
