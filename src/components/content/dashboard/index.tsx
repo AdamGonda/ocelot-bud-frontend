@@ -6,14 +6,9 @@ import { ojDialog } from "ojs/ojdialog";
 import "ojs/ojbutton";
 import { ojButton } from "ojs/ojbutton";
 
-export interface Batch {
-  id: number;
-  status: 'pending' | 'completed' | 'failed';
-  files: {
-    name: number;
-    status: 'pending' | 'completed' | 'failed';
-  }[];
-}
+// upload file(s) -> don't use response
+// get status of file(s) -> {"code":"ObjectNotFound"} or validation json
+
 
 const BindingContent = () => {
   const [batch, setBatch] = useState<Batch[]>([]);

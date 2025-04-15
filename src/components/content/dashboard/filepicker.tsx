@@ -9,8 +9,6 @@ type FilePickerProps = ComponentProps<"oj-file-picker">;
 
 type modes = FilePickerProps["selectionMode"];
 
-const pollerIds: string[] = []
-
 const FilePicker = ({ setBatch }: { setBatch: React.Dispatch<React.SetStateAction<Batch[]>> }) => {
   const [accept, setAccept] = useState<string[]>(["image/*", "application/pdf"]);
   const [selectionMode, setSelectionMode] = useState<modes>("multiple");
@@ -33,7 +31,7 @@ const FilePicker = ({ setBatch }: { setBatch: React.Dispatch<React.SetStateActio
     );
   };
 
-  const handleOjAction = (event: ButtonElement.ojAction) => {
+  const handleUpload = (event: ButtonElement.ojAction) => {
     if (selectedFiles && selectedFiles.length > 0) {
       setUploading(true);
       const formData = new FormData();
@@ -45,23 +43,21 @@ const FilePicker = ({ setBatch }: { setBatch: React.Dispatch<React.SetStateActio
         method: "POST",
         body: formData,
       }).then(async (response) => {
+        setUploading(false)
 
-        const json = await response.json();
-
-        console.log(json);
         setBatch(prev => {
           return [...prev, {
-            id: json.id,
-            status: json.status,
-            files: json.files,
+            id: Math.floor(Math.random() * 1000000),
+            status: 'pending',
+            files: selectedFiles,
           }]
         })
-
-        setUploading(false);
+        
         setSelectedFiles([]);
-
         alert("File uploaded successfully");
       });
+
+
     }
   };
 
@@ -92,7 +88,7 @@ const FilePicker = ({ setBatch }: { setBatch: React.Dispatch<React.SetStateActio
         label={uploading ? "Loading..." : "Upload files"}
         chroming="callToAction"
         class="oj-button-full-width"
-        onojAction={handleOjAction}></oj-button>
+        onojAction={handleUpload}></oj-button>
     </>
   );
 };
