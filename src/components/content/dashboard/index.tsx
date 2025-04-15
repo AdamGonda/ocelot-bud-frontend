@@ -17,7 +17,19 @@ export interface Batch {
   files: {
     name: string;
     status: Status;
+    json: any;
   }[];
+}
+
+function getFileStatus(json: any) {
+  // return completed if there is no "required field" string in the json
+  const stringContent = JSON.stringify(json)
+
+  if (!stringContent.includes('required field')) {
+    return 'completed'
+  }
+
+  return 'failed'
 }
 
 const Dashboard = () => {
@@ -36,15 +48,21 @@ const Dashboard = () => {
           f.status = 'pending'
         } else {
           const json = await response.json();
-          console.log(json)
+          // f.status = getFileStatus(json)
           f.status = 'completed'
+          f.json = json
         }
       }))
 
       return b
     }))
 
-    setBatchs(newBatchs)
+    
+
+    setBatchs(newBatchs.map(batch => ({
+      ...batch,
+      status: batch.files.every(f => f.status !== 'pending') ? 'completed' : 'pending'
+    })))
   }
 
   return (
@@ -70,13 +88,15 @@ const Dashboard = () => {
                   border: '1px solid #ccc', 
                   borderRadius: '5px', 
                   padding: '10px',
-                  background: f.status === 'failed' ? 'rgba(255, 0, 0, 0.2)' : 'transparent'
+                  background: f.status === 'failed' ? 'rgba(255, 0, 0, 0.2)' : 
+                             f.status === 'completed' ? 'rgba(0, 138, 0, 0.2)' : 
+                             'transparent'
                 }}>
                   <p><b>File name:</b> {f.name}</p>
                   <div style={{ display: 'flex', alignItems: 'center' }}>
                     <p style={{ marginBottom: '0px', marginRight: '10px' }}><b>Status:</b></p>
                     {/* @ts-ignore */}
-                    <FileStatus id={b.id} status={f.status} />
+                    <FileStatus id={b.id} status={f.status} json={f.json} />
                   </div>
                 </div>
               ))
@@ -89,8 +109,8 @@ const Dashboard = () => {
 };
 export default Dashboard;
 
-function FileStatus({ id, status }: {
-  id: number, status: Status
+function FileStatus({ id, status, json }: {
+  id: number, status: Status, json: any
 }) {
   const diag1 = useRef<ojDialog>(null);
 
@@ -125,7 +145,7 @@ function FileStatus({ id, status }: {
       >
         <div slot="body">
           <p id="desc">
-            {JSON.stringify({foo: 'bar'})}
+            {JSON.stringify(json)}
           </p>
         </div>
         <div slot="footer">
