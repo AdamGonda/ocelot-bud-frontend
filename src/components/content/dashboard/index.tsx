@@ -8,12 +8,15 @@ import { ojButton } from "ojs/ojbutton";
 
 // upload file(s) -> don't use response
 // get status of file(s) -> 404 or validation json
+
+type Status = 'pending' | 'completed' | 'failed';
+
 export interface Batch {
   id: string;
-  status: 'pending' | 'completed' | 'failed';
+  status: Status;
   files: {
     name: string;
-    status: 'pending' | 'completed' | 'failed';
+    status: Status;
   }[];
 }
 
@@ -73,7 +76,7 @@ const Dashboard = () => {
                   <div style={{ display: 'flex', alignItems: 'center' }}>
                     <p style={{ marginBottom: '0px', marginRight: '10px' }}><b>Status:</b></p>
                     {/* @ts-ignore */}
-                    <FileStatus id={b.id} status={f.status as 'pending' | 'completed' | 'failed'} />
+                    <FileStatus id={b.id} status={f.status} />
                   </div>
                 </div>
               ))
@@ -87,7 +90,7 @@ const Dashboard = () => {
 export default Dashboard;
 
 function FileStatus({ id, status }: {
-  id: number, status: 'pending' | 'completed' | 'failed'
+  id: number, status: Status
 }) {
   const diag1 = useRef<ojDialog>(null);
 
