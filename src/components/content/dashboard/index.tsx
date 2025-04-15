@@ -7,7 +7,7 @@ import "ojs/ojbutton";
 import { ojButton } from "ojs/ojbutton";
 
 // upload file(s) -> don't use response
-// get status of file(s) -> {"code":"ObjectNotFound"} or validation json
+// get status of file(s) -> 404 or validation json
 export interface Batch {
   id: string;
   status: 'pending' | 'completed' | 'failed';
@@ -18,8 +18,8 @@ export interface Batch {
 }
 
 const Dashboard = () => {
-  const [batch, setBatch] = useState<Batch[]>([]);
-  console.log('batch', batch)
+  const [batchs, setBatchs] = useState<Batch[]>([]);
+  console.log('batchs', batchs)
 
   // const getStatus = async (name: string) => {
   //   const response = await fetch(`http://localhost:3000/api/status?name=${name}`)
@@ -53,23 +53,46 @@ const Dashboard = () => {
   //       currentBatch.map((b) => getStatus(b.id));
   //       return currentBatch;
   //   });
-  // }, [batch]);
+  // }, [batchs]);
+
+  async function handleRefresh() {
+    // map each batchs and each file and get status
+    // https://lovd4dycqhagxjh7jskvgryic4.apigateway.eu-frankfurt-1.oci.customer-oci.com/v4/api/status/IMG_0603.JPEG.json
+
+    const newBatchs = await Promise.all(batchs.map(async (b) => {
+      await Promise.all(b.files.map(async (f) => {
+        const response = await fetch(`https://lovd4dycqhagxjh7jskvgryic4.apigateway.eu-frankfurt-1.oci.customer-oci.com/v4/api/status/${f.name}.json`)
+
+        if (response.status === 404) {
+          f.status = 'pending'
+        } else {
+          const json = await response.json();
+          console.log(json)
+          f.status = 'completed'
+        }
+      }))
+
+      return b
+    }))
+
+    setBatchs(newBatchs)
+  }
 
   return (
     <div class="oj-web-applayout-max-width oj-web-applayout-content">
       <h2 class="oj-typography-heading-sm">Prior Authorization Form Check</h2>
-      <FilePicker setBatch={setBatch} />
+      <FilePicker setBatch={setBatchs} />
 
       <oj-button
         style={{ marginTop: '10px' }}
         label={"Refresh"}
         chroming="callToAction"
         class="oj-button-full-width"
-        onojAction={() => {}}>
+        onojAction={handleRefresh}>
         </oj-button>
 
       <div class="batch-container">
-        {[...batch].reverse().map((b) => (
+        {[...batchs].reverse().map((b) => (
           <div key={b.id} class="batch-item" style={{ background: b.status === 'pending' ? 'rgba(193, 169, 0, 0.2)' : 'rgba(0, 138, 0, 0.2)' }}>
             <p><b>Status:</b> {b.status}</p>
             {
