@@ -21,40 +21,6 @@ const Dashboard = () => {
   const [batchs, setBatchs] = useState<Batch[]>([]);
   console.log('batchs', batchs)
 
-  // const getStatus = async (name: string) => {
-  //   const response = await fetch(`http://localhost:3000/api/status?name=${name}`)
-  //   const json = await response.json();
-
-  //   const { status, files } = json;
-
-  //   console.log(status)
-
-  //   if (status === 'completed') {
-  //     setBatch(prev => {
-  //       return prev.map(item => {
-  //         if (item.id == name) {
-  //           return {
-  //             ...item,
-  //             status,
-  //             files: files.map((f: any) => ({
-  //               ...f,
-  //             }))
-  //           };
-  //         }
-  //         return item;
-  //       });
-  //     });
-  //   }
-
-  // }
-
-  // const handleRefresh = useCallback(async () => {
-  //   setBatch(currentBatch => {
-  //       currentBatch.map((b) => getStatus(b.id));
-  //       return currentBatch;
-  //   });
-  // }, [batchs]);
-
   async function handleRefresh() {
     // map each batchs and each file and get status
     // https://lovd4dycqhagxjh7jskvgryic4.apigateway.eu-frankfurt-1.oci.customer-oci.com/v4/api/status/IMG_0603.JPEG.json
