@@ -8,44 +8,52 @@ import { ojButton } from "ojs/ojbutton";
 
 // upload file(s) -> don't use response
 // get status of file(s) -> {"code":"ObjectNotFound"} or validation json
+export interface Batch {
+  id: string;
+  status: 'pending' | 'completed' | 'failed';
+  files: {
+    name: string;
+    status: 'pending' | 'completed' | 'failed';
+  }[];
+}
 
-
-const BindingContent = () => {
+const Dashboard = () => {
   const [batch, setBatch] = useState<Batch[]>([]);
+  console.log('batch', batch)
 
-  const getStatus = async (id: number) => {
-    const response = await fetch(`http://localhost:3000/api/status?id=${id}`)
-    const json = await response.json();
+  // const getStatus = async (name: string) => {
+  //   const response = await fetch(`http://localhost:3000/api/status?name=${name}`)
+  //   const json = await response.json();
 
-    const { status, files } = json;
+  //   const { status, files } = json;
 
-    console.log(status)
+  //   console.log(status)
 
-    if (status === 'completed') {
-      setBatch(prev => {
-        return prev.map(item => {
-          if (item.id == id) {
-            return {
-              ...item,
-              status,
-              files: files.map((f: any) => ({
-                ...f,
-              }))
-            };
-          }
-          return item;
-        });
-      });
-    }
+  //   if (status === 'completed') {
+  //     setBatch(prev => {
+  //       return prev.map(item => {
+  //         if (item.id == name) {
+  //           return {
+  //             ...item,
+  //             status,
+  //             files: files.map((f: any) => ({
+  //               ...f,
+  //             }))
+  //           };
+  //         }
+  //         return item;
+  //       });
+  //     });
+  //   }
 
-  }
+  // }
 
-  const handleRefresh = useCallback(async () => {
-    setBatch(currentBatch => {
-        currentBatch.map((b) => getStatus(b.id));
-        return currentBatch;
-    });
-  }, [batch]);
+  // const handleRefresh = useCallback(async () => {
+  //   setBatch(currentBatch => {
+  //       currentBatch.map((b) => getStatus(b.id));
+  //       return currentBatch;
+  //   });
+  // }, [batch]);
 
   return (
     <div class="oj-web-applayout-max-width oj-web-applayout-content">
@@ -57,7 +65,8 @@ const BindingContent = () => {
         label={"Refresh"}
         chroming="callToAction"
         class="oj-button-full-width"
-        onojAction={handleRefresh}></oj-button>
+        onojAction={() => {}}>
+        </oj-button>
 
       <div class="batch-container">
         {[...batch].reverse().map((b) => (
@@ -69,7 +78,7 @@ const BindingContent = () => {
                   border: '1px solid #ccc', 
                   borderRadius: '5px', 
                   padding: '10px',
-                  background: f.status.status === 'failed' ? 'rgba(255, 0, 0, 0.2)' : 'transparent'
+                  background: f.status === 'failed' ? 'rgba(255, 0, 0, 0.2)' : 'transparent'
                 }}>
                   <p><b>File name:</b> {f.name}</p>
                   <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -86,13 +95,10 @@ const BindingContent = () => {
     </div>
   );
 };
-export default BindingContent;
+export default Dashboard;
 
 function FileStatus({ id, status }: {
-  id: number, status: {
-    status: 'pending' | 'completed' | 'failed',
-    validationErrors: string[]
-  }
+  id: number, status: 'pending' | 'completed' | 'failed'
 }) {
   const diag1 = useRef<ojDialog>(null);
 
@@ -104,15 +110,15 @@ function FileStatus({ id, status }: {
     diag1.current?.close();
   };
 
-  if (status.status === 'pending') {
+  if (status === 'pending') {
     return 'pending'
   }
 
-  if (status.status === 'completed') {
+  if (status === 'completed') {
     return 'completed'
   }
 
-  if (status.status === 'failed') {
+  if (status === 'failed') {
     return <div style={{ display: 'inline-block' }}>
       <oj-button
         label={"Fix problem"}
@@ -127,7 +133,7 @@ function FileStatus({ id, status }: {
       >
         <div slot="body">
           <p id="desc">
-            {JSON.stringify(status.validationErrors)}
+            {JSON.stringify({foo: 'bar'})}
           </p>
         </div>
         <div slot="footer">

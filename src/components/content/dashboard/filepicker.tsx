@@ -4,7 +4,6 @@ import "ojs/ojfilepicker";
 import { FilePickerElement } from "ojs/ojfilepicker";
 import { ButtonElement } from "ojs/ojbutton";
 import { Batch } from ".";
-
 type FilePickerProps = ComponentProps<"oj-file-picker">;
 
 type modes = FilePickerProps["selectionMode"];
@@ -39,20 +38,25 @@ const FilePicker = ({ setBatch }: { setBatch: React.Dispatch<React.SetStateActio
         formData.append(`file${index}`, file);
       });
 
+      setBatch((prev: any) => {
+        console.log('prev', prev)
+        return [...prev, {
+          id: Math.floor(Math.random() * 1000000),
+          status: 'pending',
+          files: selectedFiles.map(file => {
+            return {
+              name: file.name,
+              status: 'pending',
+            }
+          }),
+        }]
+      })
+
       fetch("http://localhost:3000/api/upload", {
         method: "POST",
         body: formData,
       }).then(async (response) => {
         setUploading(false)
-
-        setBatch(prev => {
-          return [...prev, {
-            id: Math.floor(Math.random() * 1000000),
-            status: 'pending',
-            files: selectedFiles,
-          }]
-        })
-        
         setSelectedFiles([]);
         alert("File uploaded successfully");
       });
