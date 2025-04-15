@@ -52,16 +52,18 @@ const FilePicker = ({ setBatch }: { setBatch: React.Dispatch<React.SetStateActio
         }]
       })
 
-      fetch("http://localhost:3000/api/upload", {
-        method: "POST",
-        body: formData,
-      }).then(async (response) => {
-        setUploading(false)
-        setSelectedFiles([]);
-        alert("File uploaded successfully");
-      });
+      selectedFiles.forEach(async (file) => {
+        await fetch(`https://objectstorage.eu-frankfurt-1.oraclecloud.com/p/-LeOAiq_Pl17ceVApHVBQLwsl3usmsnKFXVI2avJdbl84bsQK9Ipfark34Zu2vDb/n/ax2w5fadcgcx/b/bucket-20250410-1258_in/o/${file.name}`, {
+          method: "PUT",
+          headers: {
+            'Content-Type': file.type,
+          },
+          body: file,
+        })
+      })
 
-
+      setUploading(false)
+      setSelectedFiles([]);
     }
   };
 
