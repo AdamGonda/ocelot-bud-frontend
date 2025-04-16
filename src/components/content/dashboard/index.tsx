@@ -5,6 +5,7 @@ import "ojs/ojdialog";
 import { ojDialog } from "ojs/ojdialog";
 import "ojs/ojbutton";
 import { ojButton } from "ojs/ojbutton";
+import ExtractedData from "./ExtractedData";
 
 // upload file(s) -> don't use response
 // get status of file(s) -> 404 or validation json
@@ -125,36 +126,29 @@ function FileStatus({ id, status, json }: {
     return 'pending'
   }
 
-  if (status === 'completed') {
-    return 'completed'
-  }
-
-  if (status === 'failed') {
-    return <div style={{ display: 'inline-block' }}>
-      <oj-button
-        label={"Fix problem"}
-        chroming="callToAction"
-        class="oj-button-full-width"
-        onojAction={open}></oj-button>
-      <oj-dialog
-        id="dialog1"
-        dialog-title="Validation errors"
-        aria-describedby="desc"
-        ref={diag1}
-      >
-        <div slot="body">
-          <p id="desc">
-            {JSON.stringify(json.validation)}
-          </p>
-        </div>
-        <div slot="footer">
-          <oj-button id="okButton" onojAction={close}>
-            OK
-          </oj-button>
-        </div>
-      </oj-dialog>
-    </div>
-  }
-
-  return null;
+  return <div style={{ display: 'inline-block' }}>
+    <oj-button
+      label={"Check result"}
+      chroming="callToAction"
+      class="oj-button-full-width"
+      onojAction={open}></oj-button>
+    <oj-dialog
+      id="dialog1"
+      dialog-title="Data extraction results"
+      aria-describedby="desc"
+      style={{width: "80%"}}
+      ref={diag1}
+    >
+      <div slot="body">
+        <p id="desc">
+          <ExtractedData extractedData={json} />
+        </p>
+      </div>
+      <div slot="footer">
+        <oj-button id="okButton" onojAction={close}>
+          OK
+        </oj-button>
+      </div>
+    </oj-dialog>
+  </div>
 }
