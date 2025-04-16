@@ -42,7 +42,7 @@ const Dashboard = () => {
 
     const newBatchs = await Promise.all(batchs.map(async (b) => {
       await Promise.all(b.files.map(async (f) => {
-        const response = await fetch(`https://lovd4dycqhagxjh7jskvgryic4.apigateway.eu-frankfurt-1.oci.customer-oci.com/v4/api/status/${f.name}.json`)
+        const response = await fetch(`https://lovd4dycqhagxjh7jskvgryic4.apigateway.eu-frankfurt-1.oci.customer-oci.com/v4/api/status/${f.name}${f.name.toLowerCase().endsWith('.pdf') ? '.jpg' : ''}.json`)
 
         if (response.status === 404) {
           f.status = 'pending'
