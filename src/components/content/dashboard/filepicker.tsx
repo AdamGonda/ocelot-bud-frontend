@@ -1,17 +1,11 @@
-import { ComponentProps } from "preact";
-import { useState, useCallback } from "preact/hooks";
+import { useState } from "preact/hooks";
 import "ojs/ojfilepicker";
 import { FilePickerElement } from "ojs/ojfilepicker";
 import { ButtonElement } from "ojs/ojbutton";
 import { Batch } from ".";
-type FilePickerProps = ComponentProps<"oj-file-picker">;
-
-type modes = FilePickerProps["selectionMode"];
+import { FilePreview } from "./FilePreview";
 
 const FilePicker = ({ setBatch }: { setBatch: React.Dispatch<React.SetStateAction<Batch[]>> }) => {
-  const [accept, setAccept] = useState<string[]>(["image/*", "application/pdf"]);
-  const [selectionMode, setSelectionMode] = useState<modes>("multiple");
-  const [disabled, setDisabled] = useState<boolean>(false);
   const [selectedFiles, setSelectedFiles] = useState<Array<File>>([]); // State for storing file details
   const [uploading, setUploading] = useState<boolean>(false);
 
@@ -71,21 +65,25 @@ const FilePicker = ({ setBatch }: { setBatch: React.Dispatch<React.SetStateActio
     <>
       <oj-file-picker
         style={{ maxWidth: '100%' }}
-        accept={accept}
-        selectionMode={selectionMode}
+        accept={["image/*", "application/pdf"]}
+        selectionMode={"multiple"}
         onojSelect={selectListener}
-        disabled={disabled}
+        disabled={false}
         onojInvalidSelect={invalidSelectListener}></oj-file-picker>
       <div>
         {/* Display selected file details */}
         {selectedFiles && selectedFiles.length > 0 && (
-          <ul>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1rem", margin: "1.5rem 0 0 0"}}>
             {selectedFiles.map((file, index) => (
-              <li key={index}>
-                {`Name: ${file.name} (${file.type})`}
-              </li>
+              <div key={index}>
+                <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", height: "100%" }}>
+                  <FilePreview file={file} />
+                  <p style={{ textAlign: "center" }}><strong>Name:</strong><span style={{marginLeft: "0.5rem"}}>{file.name}</span></p>
+                  <p style={{ textAlign: "center" }}><strong>Type:</strong><span style={{marginLeft: "0.5rem"}}>{file.type}</span></p>
+                </div>
+              </div>
             ))}
-          </ul>
+          </div>
         )}
       </div>
       <oj-button

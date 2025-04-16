@@ -6,11 +6,12 @@ import { ojDialog } from "ojs/ojdialog";
 import "ojs/ojbutton";
 import { ojButton } from "ojs/ojbutton";
 import ExtractedData from "./ExtractedData";
+import { FileComponent } from "./FileComponent";
 
 // upload file(s) -> don't use response
 // get status of file(s) -> 404 or validation json
 
-type Status = 'pending' | 'completed' | 'failed';
+export type Status = 'pending' | 'completed' | 'failed';
 
 export interface Batch {
   id: string;
@@ -82,25 +83,7 @@ const Dashboard = () => {
         {[...batchs].reverse().map((b) => (
           <div key={b.id} class="batch-item" style={{ background: b.status === 'pending' ? 'rgba(193, 169, 0, 0.2)' : 'rgba(0, 138, 0, 0.2)' }}>
             <p><b>Status:</b> {b.status}</p>
-            {
-              b.files.map((f: any) => (
-                <div style={{ 
-                  border: '1px solid #ccc', 
-                  borderRadius: '5px', 
-                  padding: '10px',
-                  background: f.status === 'failed' ? 'rgba(255, 0, 0, 0.2)' : 
-                             f.status === 'completed' ? 'rgba(0, 138, 0, 0.2)' : 
-                             'transparent'
-                }}>
-                  <p><b>File name:</b> {f.name}</p>
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <p style={{ marginBottom: '0px', marginRight: '10px' }}><b>Status:</b></p>
-                    {/* @ts-ignore */}
-                    <FileStatus id={b.id} status={f.status} json={f.json} />
-                  </div>
-                </div>
-              ))
-            }
+            {b.files.map((f: any) => (<FileComponent batch={b} file={f} />))}
           </div>
         ))}
       </div>
@@ -108,47 +91,3 @@ const Dashboard = () => {
   );
 };
 export default Dashboard;
-
-function FileStatus({ id, status, json }: {
-  id: number, status: Status, json: any
-}) {
-  const diag1 = useRef<ojDialog>(null);
-
-  const open = (event: ojButton.ojAction) => {
-    diag1.current?.open();
-  };
-
-  const close = () => {
-    diag1.current?.close();
-  };
-
-  if (status === 'pending') {
-    return 'pending'
-  }
-
-  return <div style={{ display: 'inline-block' }}>
-    <oj-button
-      label={"Check result"}
-      chroming="callToAction"
-      class="oj-button-full-width"
-      onojAction={open}></oj-button>
-    <oj-dialog
-      id="dialog1"
-      dialog-title="Data extraction results"
-      aria-describedby="desc"
-      style={{width: "80%"}}
-      ref={diag1}
-    >
-      <div slot="body">
-        <p id="desc">
-          <ExtractedData extractedData={json} />
-        </p>
-      </div>
-      <div slot="footer">
-        <oj-button id="okButton" onojAction={close}>
-          OK
-        </oj-button>
-      </div>
-    </oj-dialog>
-  </div>
-}
