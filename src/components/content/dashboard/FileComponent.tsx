@@ -8,9 +8,7 @@ export const FileComponent = ({ file, batch }: { file: any, batch: any }) => {
             border: '1px solid #ccc',
             borderRadius: '5px',
             padding: '10px',
-            background: file.status === 'failed' ? 'rgba(255, 0, 0, 0.2)' :
-                file.status === 'completed' ? 'rgba(0, 138, 0, 0.2)' :
-                    'transparent'
+            background: file.status === 'completed' ? 'rgba(0, 138, 0, 0.2)' : 'transparent'
         }}>
             <p><b>File name:</b> {file.name}</p>
             <div style={{ display: 'flex', alignItems: 'center' }}>
