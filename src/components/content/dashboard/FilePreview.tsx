@@ -1,7 +1,7 @@
 import {h} from "preact";
 import { useEffect, useState } from "preact/hooks";
 
-export const FilePreview = ({file}: {file: File}) => {
+export const FilePreview = ({file, thumbNail}: {file: File, thumbNail: boolean}) => {
     const [filePreview, setFilePreview] = useState<string>("");
     const [fileType, setFileType] = useState<string>("");
 
@@ -33,15 +33,15 @@ export const FilePreview = ({file}: {file: File}) => {
 
     const renderPreview = () => (
         <div class="preview" style={{display: "flex", height: "100%", justifyContent: "center"}}>{
-            fileType.startsWith('image/') ? (
+            fileType.startsWith("image/") ? (
                 <img
                     src={filePreview}
                     alt="Uploaded preview"
                     style={{
                         //maxWidth: '100%',
-                        maxHeight: '500px',
-                        border: '1px solid #ccc',
-                        borderRadius: '4px',
+                        maxHeight: thumbNail ? "250px": "500px",
+                        border: "1px solid #ccc",
+                        borderRadius: "4px",
                     }}
                 />
             ) : (
@@ -50,7 +50,7 @@ export const FilePreview = ({file}: {file: File}) => {
                     type="application/pdf"
                     width="100%"
                     height="100%"
-                    style={{ border: '1px solid #ccc', borderRadius: '4px' }}
+                    style={{ border: "1px solid #ccc", borderRadius: "0.25rem" }}
                 />
             )
         }</div>

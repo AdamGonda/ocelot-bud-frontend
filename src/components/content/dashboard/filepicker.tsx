@@ -79,7 +79,7 @@ const FilePicker = ({ setBatch }: { setBatch: React.Dispatch<React.SetStateActio
             {selectedFiles.map((file, index) => (
               <div key={index}>
                 <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", height: "100%" }}>
-                  <FilePreview file={file} />
+                  <FilePreview file={file} thumbNail={true} />
                   <p style={{ textAlign: "center" }}><strong>Name:</strong><span style={{marginLeft: "0.5rem"}}>{file.name}</span></p>
                   <p style={{ textAlign: "center" }}><strong>Type:</strong><span style={{marginLeft: "0.5rem"}}>{file.type}</span></p>
                 </div>

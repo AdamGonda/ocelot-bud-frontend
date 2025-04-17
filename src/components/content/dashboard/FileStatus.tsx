@@ -38,7 +38,7 @@ export function FileStatus({ file, status, json }: { status: Status, json: any, 
         <div style={{overflow: "visible"}} slot="body">
           <div style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem"}}>
             <div style={{position: "sticky", top: "1.5rem", height: "fit-content"}}>
-              <FilePreview  file={file} />
+              <FilePreview file={file} thumbNail={false} />
             </div>
             
             <ExtractedData extractedData={json} />
