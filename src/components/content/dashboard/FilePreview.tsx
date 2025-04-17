@@ -38,7 +38,7 @@ export const FilePreview = ({file, thumbNail}: {file: File, thumbNail: boolean})
                     src={filePreview}
                     alt="Uploaded preview"
                     style={{
-                        //maxWidth: '100%',
+                        maxWidth: '100%',
                         maxHeight: thumbNail ? "250px": "500px",
                         border: "1px solid #ccc",
                         borderRadius: "4px",
@@ -49,7 +49,7 @@ export const FilePreview = ({file, thumbNail}: {file: File, thumbNail: boolean})
                     src={filePreview}
                     type="application/pdf"
                     width="100%"
-                    height="100%"
+                    height={thumbNail ? "250px": "500px"}
                     style={{ border: "1px solid #ccc", borderRadius: "0.25rem" }}
                 />
             )
