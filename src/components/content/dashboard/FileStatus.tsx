@@ -5,8 +5,9 @@ import { ojButton } from "ojs/ojbutton";
 import ExtractedData from "./ExtractedData";
 import { useRef } from "preact/hooks";
 import { Status } from ".";
+import { FilePreview } from "./FilePreview";
 
-export function FileStatus({ status, json }: { status: Status, json: any}) {
+export function FileStatus({ file, status, json }: { status: Status, json: any, file: File}) {
     const diag1 = useRef<ojDialog>(null);
   
     const open = (event: ojButton.ojAction) => {
@@ -34,10 +35,14 @@ export function FileStatus({ status, json }: { status: Status, json: any}) {
         style={{width: "80%"}}
         ref={diag1}
       >
-        <div slot="body">
-          <p id="desc">
+        <div style={{overflow: "visible"}} slot="body">
+          <div style={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem"}}>
+            <div style={{position: "sticky", top: "1.5rem", height: "fit-content"}}>
+              <FilePreview  file={file} />
+            </div>
+            
             <ExtractedData extractedData={json} />
-          </p>
+          </div>
         </div>
         <div slot="footer">
           <oj-button id="okButton" onojAction={close}>

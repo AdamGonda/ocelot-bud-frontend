@@ -14,7 +14,7 @@ export const FileComponent = ({ file, batch }: { file: any, batch: any }) => {
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <p style={{ marginBottom: '0px', marginRight: '10px' }}><b>Status:</b></p>
                 {/* @ts-ignore */}
-                <FileStatus id={batch.id} status={file.status} json={file.json} />
+                <FileStatus id={batch.id} status={file.status} json={file.json} file={file.file} />
             </div>
         </div>
     )

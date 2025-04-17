@@ -1,3 +1,4 @@
+import {h} from "preact";
 import { useState } from "preact/hooks";
 import "ojs/ojfilepicker";
 import { FilePickerElement } from "ojs/ojfilepicker";
@@ -6,7 +7,7 @@ import { Batch } from ".";
 import { FilePreview } from "./FilePreview";
 
 const FilePicker = ({ setBatch }: { setBatch: React.Dispatch<React.SetStateAction<Batch[]>> }) => {
-  const [selectedFiles, setSelectedFiles] = useState<Array<File>>([]); // State for storing file details
+  const [selectedFiles, setSelectedFiles] = useState<Array<File>>([]);
   const [uploading, setUploading] = useState<boolean>(false);
 
   const selectListener = (event: FilePickerElement.ojSelect) => {
@@ -41,6 +42,7 @@ const FilePicker = ({ setBatch }: { setBatch: React.Dispatch<React.SetStateActio
             return {
               name: file.name,
               status: 'pending',
+              file: file
             }
           }),
         }]

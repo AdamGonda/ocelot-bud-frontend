@@ -20,6 +20,7 @@ export interface Batch {
     name: string;
     status: Status;
     json: any;
+    file: File;
   }[];
 }
 

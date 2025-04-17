@@ -1,7 +1,7 @@
 import {h} from "preact";
 import { useEffect, useState } from "preact/hooks";
 
-export const FilePreview = ({file}: {file: any}) => {
+export const FilePreview = ({file}: {file: File}) => {
     const [filePreview, setFilePreview] = useState<string>("");
     const [fileType, setFileType] = useState<string>("");
 
@@ -38,8 +38,8 @@ export const FilePreview = ({file}: {file: any}) => {
                     src={filePreview}
                     alt="Uploaded preview"
                     style={{
-                        maxWidth: '100%',
-                        maxHeight: '300px',
+                        //maxWidth: '100%',
+                        maxHeight: '500px',
                         border: '1px solid #ccc',
                         borderRadius: '4px',
                     }}
